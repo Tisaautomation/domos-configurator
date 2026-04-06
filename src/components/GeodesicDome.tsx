@@ -1873,7 +1873,7 @@ export function DomeScene({ config, selectedKey }: { config: DomeConfig; selecte
         enablePan={false}
         enableZoom={!isInterior}
         minDistance={isInterior ? 0.01 : sizeData.radius + 1}
-        maxDistance={isInterior ? 0.1 : sizeData.radius * 4}
+        maxDistance={isInterior ? 0.1 : sizeData.radius * 12}
         minPolarAngle={isInterior ? Math.PI / 4 : 0.1}
         maxPolarAngle={isInterior ? Math.PI / 1.5 : Math.PI / 2.05}
         target={[0, isInterior ? sizeData.height * 0.35 : sizeData.height * 0.35, 0]}
