@@ -261,9 +261,9 @@ export default function Home() {
 
         {/* Quote button */}
         <div className="px-5 py-6">
-          <button className="w-full py-3 rounded-lg bg-white/10 border border-white/20 text-white text-sm font-medium tracking-wide uppercase cursor-pointer hover:bg-white/20 transition-colors">
+          <a href="mailto:info@thedomeshop.com?subject=Dome%20Quote%20Request" className="block w-full py-3 rounded-lg bg-white/10 border border-white/20 text-white text-sm font-medium tracking-wide uppercase cursor-pointer hover:bg-white/20 transition-colors text-center">
             Request Quote
-          </button>
+          </a>
         </div>
       </div>
     </main>
