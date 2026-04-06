@@ -86,8 +86,8 @@ export default function DomeViewer({ config, selectedKey }: { config: DomeConfig
     <div className="w-full h-full absolute inset-0">
       <Canvas
         camera={{
-          position: [sizeData.radius * -0.3, sizeData.height * 0.5, sizeData.radius * 5.5],
-          fov: 30,
+          position: [sizeData.radius * -0.2, sizeData.height * 0.4, sizeData.radius * 7],
+          fov: 28,
           near: 0.1,
           far: 200,
         }}
