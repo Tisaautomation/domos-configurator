@@ -37,18 +37,15 @@ function SunsetSky() {
     c.width = 2; c.height = 512;
     const ctx = c.getContext("2d")!;
     const grad = ctx.createLinearGradient(0, 0, 0, 512);
-    grad.addColorStop(0, "#3a5a8a");     // soft blue top
-    grad.addColorStop(0.12, "#5a7aaa");  // light blue
-    grad.addColorStop(0.25, "#8a9abb");  // pale blue
-    grad.addColorStop(0.38, "#bba088");  // warm mauve
-    grad.addColorStop(0.48, "#ddaa77");  // soft peach
-    grad.addColorStop(0.55, "#eebb88");  // warm golden
-    grad.addColorStop(0.62, "#f0cc99");  // pale golden horizon
-    grad.addColorStop(0.68, "#ddbb88");  // warm fade
-    grad.addColorStop(0.75, "#99aa77");  // soft green distance
-    grad.addColorStop(0.82, "#778866");  // distant hills
-    grad.addColorStop(0.90, "#556644");  // dark hills
-    grad.addColorStop(1.0, "#445533");   // ground merge
+    grad.addColorStop(0, "#b0b8c0");     // light grey top
+    grad.addColorStop(0.15, "#bcc4cc");  // pale grey
+    grad.addColorStop(0.30, "#c8d0d8");  // soft grey
+    grad.addColorStop(0.45, "#d0d8dd");  // lighter grey
+    grad.addColorStop(0.55, "#d5dde0");  // near white grey horizon
+    grad.addColorStop(0.65, "#c0ccbb");  // grey-green fade
+    grad.addColorStop(0.75, "#8aaa8a");  // soft aqua green
+    grad.addColorStop(0.85, "#6a9a7a");  // aqua green hills
+    grad.addColorStop(1.0, "#5a8a6a");   // ground merge
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 2, 512);
     const tex = new THREE.CanvasTexture(c);
@@ -73,7 +70,7 @@ function GrassGround() {
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.16, 0]}>
       <circleGeometry args={[80, 64]} />
-      <meshStandardMaterial color="#3a5a25" roughness={0.95} metalness={0.0} />
+      <meshStandardMaterial color="#6aaa7a" roughness={0.95} metalness={0.0} />
     </mesh>
   );
 }

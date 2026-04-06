@@ -1805,7 +1805,7 @@ function CurtainTrack({ radius, windowType }: { radius: number; windowType: stri
 function CameraSetup({ radius, height }: { radius: number; height: number }) {
   const { camera } = useThree();
   useEffect(() => {
-    camera.position.set(radius * -0.1, height * 0.3, radius * 10);
+    camera.position.set(radius * -0.1, height * 0.4, radius * 6);
     camera.updateProjectionMatrix();
   }, [camera, radius, height]);
   return null;
@@ -1882,7 +1882,7 @@ export function DomeScene({ config, selectedKey }: { config: DomeConfig; selecte
         makeDefault
         enablePan={false}
         enableZoom={!isInterior}
-        minDistance={isInterior ? 0.01 : sizeData.radius * 8}
+        minDistance={isInterior ? 0.01 : sizeData.radius * 1.5}
         maxDistance={isInterior ? 0.1 : sizeData.radius * 12}
         minPolarAngle={isInterior ? Math.PI / 4 : 0.1}
         maxPolarAngle={isInterior ? Math.PI / 1.5 : Math.PI / 2.05}
