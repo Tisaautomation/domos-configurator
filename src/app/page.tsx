@@ -260,9 +260,25 @@ export default function Home() {
 
         {/* Quote button */}
         <div className="px-5 py-6">
-          <a href="mailto:info@thedomeshop.com?subject=Dome%20Quote%20Request" className="block w-full py-3 rounded-lg bg-white/10 border border-white/20 text-white text-sm font-medium tracking-wide uppercase cursor-pointer hover:bg-white/20 transition-colors text-center">
+          <button
+            onClick={() => {
+              const lines = [
+                `Dome Size: ${config.size}`,
+                `Exterior Color: ${EXTERIOR_COLORS.find(c => c.hex === config.exteriorColor)?.label || config.exteriorColor}`,
+                `Interior Color: ${INTERIOR_COLORS.find(c => c.hex === config.interiorColor)?.label || config.interiorColor}`,
+                `Panoramic Window: ${WINDOW_OPTIONS.find(o => o.id === config.window)?.label || config.window}`,
+                `Foundation: ${config.foundation}`,
+                `Insulation: ${config.insulation}`,
+                `Heating: ${config.heating.size ? [...config.heating].join(", ") : "None"}`,
+                `Extras: ${config.extras.size ? [...config.extras].join(", ") : "None"}`,
+              ];
+              const body = encodeURIComponent(`Hi, I'd like a quote for the following dome configuration:\n\n${lines.join("\n")}\n\nPlease let me know the price and availability.\n\nThank you!`);
+              window.open(`mailto:info@thedomeshop.com?subject=${encodeURIComponent("Dome Quote Request - " + config.size)}&body=${body}`);
+            }}
+            className="w-full py-3 rounded-lg bg-white/10 border border-white/20 text-white text-sm font-medium tracking-wide uppercase cursor-pointer hover:bg-white/20 transition-colors"
+          >
             Request Quote
-          </a>
+          </button>
         </div>
       </div>
     </main>
