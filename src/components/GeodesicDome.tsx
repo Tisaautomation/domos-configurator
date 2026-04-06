@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useRef, useState, useCallback } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useMemo, useRef, useState, useCallback, useEffect } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
 // ─── Types ──────────────────────────────────────────────────────────
@@ -1802,6 +1802,15 @@ function CurtainTrack({ radius, windowType }: { radius: number; windowType: stri
 
 // ─── Main Scene (exported for use in page) ──────────────────────────
 
+function CameraSetup({ radius, height }: { radius: number; height: number }) {
+  const { camera } = useThree();
+  useEffect(() => {
+    camera.position.set(radius * -0.1, height * 0.3, radius * 10);
+    camera.updateProjectionMatrix();
+  }, [camera, radius, height]);
+  return null;
+}
+
 export function DomeScene({ config, selectedKey }: { config: DomeConfig; selectedKey: string }) {
   const sizeData = DOME_SIZES[config.size];
   const isDouble = config.size === "12M";
@@ -1812,6 +1821,7 @@ export function DomeScene({ config, selectedKey }: { config: DomeConfig; selecte
 
   return (
     <>
+      {!isInterior && <CameraSetup radius={sizeData.radius} height={sizeData.height} />}
       {/* Lighting */}
       <ambientLight intensity={isInterior && config.window !== "none" ? 0.4 : 1.0} color={isInterior && config.window !== "none" ? "#ffe8cc" : "#ffffff"} />
       <directionalLight position={[10, 12, 8]} intensity={isInterior && config.window !== "none" ? 0.6 : 1.5} />
