@@ -37,21 +37,18 @@ function SunsetSky() {
     c.width = 2; c.height = 512;
     const ctx = c.getContext("2d")!;
     const grad = ctx.createLinearGradient(0, 0, 0, 512);
-    grad.addColorStop(0, "#0a0a2a");     // deep night blue top
-    grad.addColorStop(0.08, "#141438");  // dark blue
-    grad.addColorStop(0.18, "#1e2a55");  // navy
-    grad.addColorStop(0.28, "#3a3a72");  // blue-purple
-    grad.addColorStop(0.38, "#6b4a7a");  // purple
-    grad.addColorStop(0.46, "#9a4a5a");  // rose
-    grad.addColorStop(0.52, "#cc6633");  // deep orange
-    grad.addColorStop(0.57, "#e87840");  // warm orange
-    grad.addColorStop(0.62, "#ff9955");  // bright horizon
-    grad.addColorStop(0.67, "#ffbb66");  // golden glow
-    grad.addColorStop(0.72, "#ddaa66");  // warm fade
-    grad.addColorStop(0.78, "#88774a");  // hazy distance
-    grad.addColorStop(0.84, "#667744");  // distant hills
-    grad.addColorStop(0.92, "#445533");  // dark hills
-    grad.addColorStop(1.0, "#334422");   // ground merge
+    grad.addColorStop(0, "#3a5a8a");     // soft blue top
+    grad.addColorStop(0.12, "#5a7aaa");  // light blue
+    grad.addColorStop(0.25, "#8a9abb");  // pale blue
+    grad.addColorStop(0.38, "#bba088");  // warm mauve
+    grad.addColorStop(0.48, "#ddaa77");  // soft peach
+    grad.addColorStop(0.55, "#eebb88");  // warm golden
+    grad.addColorStop(0.62, "#f0cc99");  // pale golden horizon
+    grad.addColorStop(0.68, "#ddbb88");  // warm fade
+    grad.addColorStop(0.75, "#99aa77");  // soft green distance
+    grad.addColorStop(0.82, "#778866");  // distant hills
+    grad.addColorStop(0.90, "#556644");  // dark hills
+    grad.addColorStop(1.0, "#445533");   // ground merge
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 2, 512);
     const tex = new THREE.CanvasTexture(c);
@@ -89,8 +86,8 @@ export default function DomeViewer({ config, selectedKey }: { config: DomeConfig
     <div className="w-full h-full absolute inset-0">
       <Canvas
         camera={{
-          position: [sizeData.radius * -0.6, sizeData.height * 0.8, sizeData.radius * 2.8],
-          fov: 40,
+          position: [sizeData.radius * -0.5, sizeData.height * 0.7, sizeData.radius * 3.8],
+          fov: 35,
           near: 0.1,
           far: 200,
         }}
