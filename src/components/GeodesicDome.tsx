@@ -1877,7 +1877,8 @@ export function DomeScene({ config, selectedKey }: { config: DomeConfig; selecte
         minPolarAngle={isInterior ? Math.PI / 4 : 0.1}
         maxPolarAngle={isInterior ? Math.PI / 1.5 : Math.PI / 2.05}
         target={[0, isInterior ? sizeData.height * 0.35 : sizeData.height * 0.35, 0]}
-        enableDamping={false}
+        enableDamping={typeof window !== "undefined" && window.innerWidth < 768}
+        dampingFactor={0.08}
       />
     </>
   );
