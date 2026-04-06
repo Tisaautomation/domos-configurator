@@ -262,18 +262,44 @@ export default function Home() {
         <div className="px-5 py-6">
           <button
             onClick={() => {
-              const lines = [
-                `Dome Size: ${config.size}`,
-                `Exterior Color: ${EXTERIOR_COLORS.find(c => c.hex === config.exteriorColor)?.label || config.exteriorColor}`,
-                `Interior Color: ${INTERIOR_COLORS.find(c => c.hex === config.interiorColor)?.label || config.interiorColor}`,
-                `Panoramic Window: ${WINDOW_OPTIONS.find(o => o.id === config.window)?.label || config.window}`,
-                `Foundation: ${config.foundation}`,
-                `Insulation: ${config.insulation}`,
-                `Heating: ${config.heating.size ? [...config.heating].join(", ") : "None"}`,
-                `Extras: ${config.extras.size ? [...config.extras].join(", ") : "None"}`,
+              const extColor = EXTERIOR_COLORS.find(c => c.hex === config.exteriorColor)?.label || "Custom";
+              const intColor = INTERIOR_COLORS.find(c => c.hex === config.interiorColor)?.label || "Custom";
+              const window_ = WINDOW_OPTIONS.find(o => o.id === config.window)?.label || "None";
+              const heating = config.heating.size ? [...config.heating].map(h => HEATING_OPTIONS.find(o => o.id === h)?.label || h).join(", ") : "None";
+              const extras = config.extras.size ? [...config.extras].map(e => EXTRAS_OPTIONS.find(o => o.id === e)?.label || e).join(", ") : "None";
+              const found = FOUNDATION_OPTIONS.find(o => o.id === config.foundation)?.label || config.foundation;
+              const insul = INSULATION_OPTIONS.find(o => o.id === config.insulation)?.label || config.insulation;
+
+              const summary = [
+                `DOME CONFIGURATION`,
+                `━━━━━━━━━━━━━━━━━━`,
+                `Size: ${config.size} (${DOME_SIZES[config.size].desc})`,
+                ``,
+                `COVER`,
+                `  Exterior: ${extColor}`,
+                `  Interior: ${intColor}`,
+                `  Panoramic: ${window_}`,
+                ``,
+                `STRUCTURE`,
+                `  Foundation: ${found}`,
+                `  Insulation: ${insul}`,
+                ``,
+                `CLIMATE`,
+                `  Heating: ${heating}`,
+                ``,
+                `EXTRAS`,
+                `  ${extras}`,
+                ``,
+                `━━━━━━━━━━━━━━━━━━`,
+                ``,
+                `Name: `,
+                `Location: `,
+                `Phone: `,
+                ``,
+                `Notes: `,
               ];
-              const body = encodeURIComponent(`Hi, I'd like a quote for the following dome configuration:\n\n${lines.join("\n")}\n\nPlease let me know the price and availability.\n\nThank you!`);
-              window.open(`mailto:info@thedomeshop.com?subject=${encodeURIComponent("Dome Quote Request - " + config.size)}&body=${body}`);
+              const body = encodeURIComponent(summary.join("\n"));
+              window.open(`mailto:info@thedomeshop.com?subject=${encodeURIComponent(`Quote Request - ${config.size} Dome - ${extColor}`)}&body=${body}`);
             }}
             className="w-full py-3 rounded-lg bg-white/10 border border-white/20 text-white text-sm font-medium tracking-wide uppercase cursor-pointer hover:bg-white/20 transition-colors"
           >
