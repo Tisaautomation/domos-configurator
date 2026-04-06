@@ -167,9 +167,9 @@ export default function Home() {
       </div>
 
       {/* Size badge */}
-      <div className="absolute top-4 right-4 z-20 bg-black/40 backdrop-blur-md rounded-full border border-white/10 px-4 py-2">
-        <div className="text-white text-xs font-medium">{sizeData.label}</div>
-        <div className="text-white/40 text-[10px]">{sizeData.desc}</div>
+      <div className="absolute top-14 sm:top-4 right-2 sm:right-4 z-20 bg-black/40 backdrop-blur-md rounded-full border border-white/10 px-3 py-1.5">
+        <div className="text-white text-[10px] sm:text-xs font-medium">{sizeData.label}</div>
+        <div className="text-white/40 text-[8px] sm:text-[10px]">{sizeData.desc}</div>
       </div>
 
       {/* Overlay — mobile only */}
