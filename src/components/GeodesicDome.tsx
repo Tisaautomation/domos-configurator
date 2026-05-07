@@ -1062,7 +1062,7 @@ function isDoorPanel(center: THREE.Vector3, radius: number, isDouble = false): b
   );
 }
 
-function Door({ radius, canvasColor, isInterior, isDouble, windowType }: { radius: number; canvasColor: string; isInterior: boolean; isDouble: boolean; windowType: string }) {
+function Door({ radius, canvasColor, innerCanvasColor, isInterior, isDouble, windowType }: { radius: number; canvasColor: string; innerCanvasColor: string; isInterior: boolean; isDouble: boolean; windowType: string }) {
   const dims = getDoorDims(radius, isDouble);
   const DWIDTH = dims.width;
   const DHEIGHT = dims.height;
@@ -1070,6 +1070,44 @@ function Door({ radius, canvasColor, isInterior, isDouble, windowType }: { radiu
   const domeSurfaceZAtTop = Math.sqrt(Math.max(0.01, radius * radius - DHEIGHT * DHEIGHT));
   const tunnelDepth = doorZ - domeSurfaceZAtTop;
   const hw = DWIDTH / 2;
+
+  // Top cap: spherical patch sewn just under the dome surface above the door,
+  // covering any triangular gap between the tunnel top edge and the cover panels.
+  // Sits at radius - 0.005 so cover (at radius) hides it where cover exists.
+  const topCapGeo = useMemo(() => {
+    const positions: number[] = [];
+    const xMargin = 0.06;
+    const xMin = -hw - xMargin;
+    const xMax = hw + xMargin;
+    const yBot = DHEIGHT - 0.02;
+    const yTop = Math.min(DHEIGHT + 0.55, radius * 0.97);
+    const xSteps = 22;
+    const ySteps = 14;
+    const R = radius - 0.005;
+    const surfaceZ = (x: number, y: number) => {
+      const arg = R * R - x * x - y * y;
+      return arg > 0 ? Math.sqrt(arg) : null;
+    };
+    for (let i = 0; i < xSteps; i++) {
+      for (let j = 0; j < ySteps; j++) {
+        const x0 = xMin + (i / xSteps) * (xMax - xMin);
+        const x1 = xMin + ((i + 1) / xSteps) * (xMax - xMin);
+        const y0 = yBot + (j / ySteps) * (yTop - yBot);
+        const y1 = yBot + ((j + 1) / ySteps) * (yTop - yBot);
+        const z00 = surfaceZ(x0, y0);
+        const z01 = surfaceZ(x0, y1);
+        const z10 = surfaceZ(x1, y0);
+        const z11 = surfaceZ(x1, y1);
+        if (z00 === null || z01 === null || z10 === null || z11 === null) continue;
+        positions.push(x0, y0, z00, x1, y0, z10, x1, y1, z11);
+        positions.push(x0, y0, z00, x1, y1, z11, x0, y1, z01);
+      }
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+    geo.computeVertexNormals();
+    return geo;
+  }, [radius, hw, DHEIGHT]);
 
   // Build canvas tunnel geometry: left wall, right wall, top
   const tunnelGeo = useMemo(() => {
@@ -1124,7 +1162,12 @@ function Door({ radius, canvasColor, isInterior, isDouble, windowType }: { radiu
     <group>
       {/* Canvas tunnel — always opaque */}
       <mesh geometry={tunnelGeo}>
-        <meshStandardMaterial color={isInterior ? "#e8e0d0" : (canvasColor === "_transparent" ? "#e8e0d0" : canvasColor)} roughness={0.7} metalness={0.05} side={THREE.DoubleSide} />
+        <meshStandardMaterial color={isInterior ? innerCanvasColor : (canvasColor === "_transparent" ? "#e8e0d0" : canvasColor)} roughness={0.7} metalness={0.05} side={THREE.DoubleSide} />
+      </mesh>
+
+      {/* Top cap: closes any gap between tunnel top edge and cover panels above the door */}
+      <mesh geometry={topCapGeo} renderOrder={-1}>
+        <meshStandardMaterial color={isInterior ? innerCanvasColor : (canvasColor === "_transparent" ? "#e8e0d0" : canvasColor)} roughness={0.7} metalness={0.05} side={THREE.DoubleSide} />
       </mesh>
 
       {/* Door frame - at doorZ */}
@@ -1854,7 +1897,7 @@ export function DomeScene({ config, selectedKey }: { config: DomeConfig; selecte
         {isInterior && <DomeStruts struts={dome.struts} radius={dome.radius} isDouble={isDouble} />}
         {isInterior && <DomeHubs struts={dome.struts} radius={dome.radius} isDouble={isDouble} />}
         <group position={[0.3, 0, 0]}>
-          <Door radius={dome.radius} canvasColor={config.exteriorColor} isInterior={isInterior} isDouble={isDouble} windowType={config.window} />
+          <Door radius={dome.radius} canvasColor={config.exteriorColor} innerCanvasColor={config.interiorColor} isInterior={isInterior} isDouble={isDouble} windowType={config.window} />
         </group>
         {config.heating.has("stove") && (
           <WoodStove radius={dome.radius} isInterior={isInterior} />
